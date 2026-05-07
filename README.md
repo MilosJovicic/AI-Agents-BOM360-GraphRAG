@@ -34,9 +34,9 @@ agent response is checked against the retrieved facts before it is returned.
 ```mermaid
 flowchart LR
     user["Plant supervisor<br/>Operations manager"] --> entry["CLI or<br/>LangGraph Studio"]
-    entry --> graph["LangGraph<br/>StateGraph"]
+    entry --> workflow["LangGraph<br/>StateGraph"]
 
-    graph --> router["Router agent<br/>intent classifier"]
+    workflow --> router["Router agent<br/>intent classifier"]
     router --> scope["Scope resolver<br/>line_id + job_id"]
 
     scope --> cypher["Parameterized<br/>Cypher templates"]
@@ -52,7 +52,7 @@ flowchart LR
     classDef aiNode fill:#fff4e5,stroke:#bf8700,color:#3d2b00;
     classDef outNode fill:#f6f8fa,stroke:#57606a,color:#24292f;
 
-    class graph,router,scope graphNode;
+    class workflow,router,scope graphNode;
     class cypher,neo4j,facts dataNode;
     class analysts,verifier aiNode;
     class user,entry,response outNode;
@@ -174,20 +174,20 @@ erDiagram
 ```mermaid
 sequenceDiagram
     participant User
-    participant Graph as LangGraph
+    participant Workflow as LangGraph
     participant Neo4j
     participant Analyst as Domain Agent
     participant Verifier
 
-    User->>Graph: Natural-language operations question
-    Graph->>Graph: Classify intent and resolve scope
-    Graph->>Neo4j: Run parameterized Cypher templates
-    Neo4j-->>Graph: QueryResult facts
-    Graph->>Analyst: Inject selected fact payload
-    Analyst-->>Graph: Typed Pydantic output
-    Graph->>Verifier: Output plus source facts
-    Verifier-->>Graph: VerificationResult
-    Graph-->>User: Grounded Markdown response
+    User->>Workflow: Natural-language operations question
+    Workflow->>Workflow: Classify intent and resolve scope
+    Workflow->>Neo4j: Run parameterized Cypher templates
+    Neo4j-->>Workflow: QueryResult facts
+    Workflow->>Analyst: Inject selected fact payload
+    Analyst-->>Workflow: Typed Pydantic output
+    Workflow->>Verifier: Output plus source facts
+    Verifier-->>Workflow: VerificationResult
+    Workflow-->>User: Grounded Markdown response
 ```
 
 </details>
